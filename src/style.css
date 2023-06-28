@@ -1,0 +1,13 @@
+.list-group a:hover {
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+
+.menu-logo {
+  cursor: pointer;
+}
+
+#nav-col {
+  padding: 0 !important;
+}

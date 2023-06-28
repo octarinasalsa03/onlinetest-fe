@@ -1,6 +1,6 @@
-import AdminTemplate from "../../template/admin";
+import AdminTemplate from "../../template/admin/candidate";
 
-function index() {
+function Candidate() {
   var data = [
     {
       id: 1,
@@ -18,4 +18,4 @@ function index() {
   return <AdminTemplate data={data}></AdminTemplate>;
 }
 
-export default index;
+export default Candidate;
