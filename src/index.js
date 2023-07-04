@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Candidate from "../src/components/page/admin/candidate";
+import { Provider } from "react-redux";
+import store from "./app/store";
+import TestIndex from "./components/page/test";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    {<Candidate></Candidate>}
+    {/* {<Candidate></Candidate>} */}
+    <Provider store={store}>
+      <TestIndex></TestIndex>
+    </Provider>
   </React.StrictMode>
 );
 
