@@ -15,7 +15,7 @@ function Index() {
     useEffect(() => {
         axios.get(url)
             .then(function (response) {
-                // console.log(response.data.data);
+                console.log(response.data.data);
                 setData(response.data.data);
                 // setDataIndex(data.at(index));
                 // console.log(data);
@@ -26,8 +26,24 @@ function Index() {
     }, []);
 
     useEffect(() => {
+        // console.log("in");
         setDataIndex(data?.at(idx));
     }, [data, idx]);
+
+    // useEffect(() => {
+    //     console.log("in");
+    // }, [dataIndex]);
+
+    const handleChange = (event) => {
+        let id = +event.target.value;   // convert string to int
+        // console.log(event.target.checked);
+        let dataCopy = [...data];
+        let dataIndexCopy = {...dataCopy[idx]};
+        dataIndexCopy.answer.id = id;
+        dataCopy[idx] = dataIndexCopy;
+        console.log(dataCopy[idx]);
+        setData(dataCopy);
+    }
 
     return (
         <div className="container" id="body">
@@ -36,7 +52,17 @@ function Index() {
             </p>
             <form>
                 Answer:
-                <p>
+                {dataIndex.question?.answer.map(x => {
+                    return (
+                        <p>
+                            <label>
+                                <input type="radio" name="myRadio" value={x.id} checked={x.id === dataIndex.answer?.id} onChange={event => handleChange(event)} />
+                                {x.value}
+                            </label>
+                        </p>
+                    )
+                })}
+                {/* <p>
                     <label>
                         <input type="radio" name="myRadio" value="option1" />
                         Option 1
@@ -53,10 +79,10 @@ function Index() {
                         <input type="radio" name="myRadio" value="option3" />
                         Option 3
                     </label>
-                </p>
+                </p> */}
             </form>
 
-            <table id="departmentTable" className="table table-bordered">
+            {/* <table id="departmentTable" className="table table-bordered">
                 <thead>
                     <tr>
                         <th>Description</th>
@@ -71,8 +97,13 @@ function Index() {
                         )
                     })}
                 </tbody>
-            </table>
+            </table> */}
 
+            <div>
+                <p>
+                    {idx}
+                </p>
+            </div>
             <button onClick={() => dispatch(previous())}>Previous</button>
             <button onClick={() => dispatch(next())}>Next</button>
             {/* klik button -> redux function go dari paginationSlice -> state.url berubah -> url berubah -> useEffect jalan -> get dari url baru */}
