@@ -63,7 +63,16 @@ function Index() {
                         </span>
                     </h4>
                     <hr></hr>
-                    <div className="list-group" id="navigation-menu">
+                    <div className="list-group">
+                        {data.map((x, index) => {
+                            return (
+                                <button onClick={() => dispatch(go(index))}
+                                    className="list-group-item list-group-item-action navigation-menu-item"
+                                    data-toggle="list">
+                                    Number {index}
+                                </button>
+                            )
+                        })}
                     </div>
                 </div>
 
@@ -76,6 +85,7 @@ function Index() {
                         <p className="form-control description-box">
                             {dataIndex.question?.description}
                         </p>
+
                         <form>
                             {/* <div hidden={true}>
                                 <input type="text" name="questionId" value={dataIndex.question?.id} hidden={true}></input>
@@ -96,10 +106,10 @@ function Index() {
                         </form>
 
                         <div className="reserve-space" id="alert-space">
-                            <div className="alert alert-success" style={{display: "none"}} id="success">
+                            <div className="alert alert-success" style={{ display: "none" }} id="success">
                                 Answer Saved!
                             </div>
-                            <div className="alert alert-danger" style={{display: "none"}} id="fail">
+                            <div className="alert alert-danger" style={{ display: "none" }} id="fail">
                                 Answer Save Failed, Please Retry
                             </div>
                         </div>
@@ -108,15 +118,15 @@ function Index() {
                             <div className="row">
                                 <div className="input-group">
                                     <div className="col-md-6 text-center">
-                                        <button onClick={() => dispatch(previous())} disabled={idx < 1}>Previous</button>
+                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(previous())} disabled={idx < 1}>Previous</button>
                                     </div>
                                     <div className="col-md-6 text-center">
-                                        <button onClick={() => dispatch(next())} disabled={idx >= data.length - 1}>Next</button>
+                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(next())} disabled={idx >= data.length - 1}>Next</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
