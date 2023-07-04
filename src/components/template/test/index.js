@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
 import axios from "axios";
+import './index.css'
 
 function Index() {
 
-    const url = "http://localhost:8088/api/test-management/gettest/amltQGdtYWlsLmNvbQ";
+    const url = "http://localhost:8088/api/test-management/";
+    const encoded = "amltQGdtYWlsLmNvbQ";
     const idx = useSelector(state => state.testIndex.idx);
     const dispatch = useDispatch();
 
@@ -13,7 +15,7 @@ function Index() {
     const [dataIndex, setDataIndex] = useState({});
 
     useEffect(() => {
-        axios.get(url)
+        axios.get(url + "gettest/" + encoded)
             .then(function (response) {
                 console.log(response.data.data);
                 setData(response.data.data);
@@ -26,87 +28,104 @@ function Index() {
     }, []);
 
     useEffect(() => {
-        // console.log("in");
         setDataIndex(data?.at(idx));
     }, [data, idx]);
 
-    // useEffect(() => {
-    //     console.log("in");
-    // }, [dataIndex]);
+    const handleChange = (event, questionId) => {
+        // console.log(questionId);
+        let answerId = +event.target.value;   // convert string to int
+        axios.post(url + "saveanswer", {
+            encodedemail: encoded,
+            question_id: questionId,
+            answer_id: answerId
+        }).then(function (response) {
+            if (response.data.message === "success") {
+                let dataCopy = [...data];
+                let dataIndexCopy = { ...dataCopy[idx] };
+                dataIndexCopy.answer.id = answerId;
+                dataCopy[idx] = dataIndexCopy;
+                setData(dataCopy);
+                console.log("hi");
+            }
+        }).catch(function (error) {
+            console.log(error);
+        })
 
-    const handleChange = (event) => {
-        let id = +event.target.value;   // convert string to int
-        // console.log(event.target.checked);
-        let dataCopy = [...data];
-        let dataIndexCopy = {...dataCopy[idx]};
-        dataIndexCopy.answer.id = id;
-        dataCopy[idx] = dataIndexCopy;
-        console.log(dataCopy[idx]);
-        setData(dataCopy);
     }
 
     return (
-        <div className="container" id="body">
-            <p>
-                {dataIndex.question?.description}
-            </p>
-            <form>
-                Answer:
-                {dataIndex.question?.answer.map(x => {
-                    return (
+        <div className="container-fluid" id="body">
+            <div className="row justify-content-md-center">
+                <div className="col-4">
+                    <h4 className="navigation-menu-header">
+                        <span className="fw-semibold navigation-menu-item">
+                            Test Problems
+                        </span>
+                    </h4>
+                    <hr></hr>
+                    <div className="list-group" id="navigation-menu">
+                    </div>
+                </div>
+
+                <div className="col-8 bg-body-primary test-content">
+                    <div className="tab-content">
                         <p>
-                            <label>
-                                <input type="radio" name="myRadio" value={x.id} checked={x.id === dataIndex.answer?.id} onChange={event => handleChange(event)} />
-                                {x.value}
-                            </label>
+                            Problem <span id="problem-number">{idx + 1}</span>
                         </p>
-                    )
-                })}
-                {/* <p>
-                    <label>
-                        <input type="radio" name="myRadio" value="option1" />
-                        Option 1
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input type="radio" name="myRadio" value="option2" defaultChecked={true} />
-                        Option 2
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input type="radio" name="myRadio" value="option3" />
-                        Option 3
-                    </label>
-                </p> */}
-            </form>
 
-            {/* <table id="departmentTable" className="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map(x => {
-                        return (
-                            <tr>
-                                <td>{x.question?.description}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table> */}
+                        <p className="form-control description-box">
+                            {dataIndex.question?.description}
+                        </p>
+                        <form>
+                            {/* <div hidden={true}>
+                                <input type="text" name="questionId" value={dataIndex.question?.id} hidden={true}></input>
+                            </div> */}
+                            Answer:
+                            <div className="form-group answers">
+                                {dataIndex.question?.answer.map(x => {
+                                    return (
+                                        <p className="form-check" key={x.id}>
+                                            <label className="form-check-label">
+                                                <input type="radio" className="form-check-input" name="answerId" value={x.id} checked={x.id === dataIndex.answer?.id} onChange={event => handleChange(event, dataIndex.question?.id)} />
+                                                {x.value}
+                                            </label>
+                                        </p>
+                                    )
+                                })}
+                            </div>
+                        </form>
 
-            <div>
+                        <div className="reserve-space" id="alert-space">
+                            <div className="alert alert-success" style={{display: "none"}} id="success">
+                                Answer Saved!
+                            </div>
+                            <div className="alert alert-danger" style={{display: "none"}} id="fail">
+                                Answer Save Failed, Please Retry
+                            </div>
+                        </div>
+
+                        <div className="navigation">
+                            <div className="row">
+                                <div className="input-group">
+                                    <div className="col-md-6 text-center">
+                                        <button onClick={() => dispatch(previous())} disabled={idx < 1}>Previous</button>
+                                    </div>
+                                    <div className="col-md-6 text-center">
+                                        <button onClick={() => dispatch(next())} disabled={idx >= data.length - 1}>Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            {/* <div>
                 <p>
                     {idx}
                 </p>
-            </div>
-            <button onClick={() => dispatch(previous())}>Previous</button>
-            <button onClick={() => dispatch(next())}>Next</button>
-            {/* klik button -> redux function go dari paginationSlice -> state.url berubah -> url berubah -> useEffect jalan -> get dari url baru */}
+            </div> */}
         </div>
     )
 }
