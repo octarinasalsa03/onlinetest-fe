@@ -1,8 +1,13 @@
 import TestTemplate from '../../template/test';
+import TimerTemplate from '../../template/timer';
 
 function Index() {
     return (
-        <TestTemplate></TestTemplate>
+        <div>
+            <TimerTemplate></TimerTemplate>
+            <TestTemplate></TestTemplate>
+        </div>
+
     )
 }
 

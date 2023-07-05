@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
 import axios from "axios";
-import './index.css'
+import Submit from "../../../services/test/submit";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+
+
 
 function Index() {
-
     const url = "http://localhost:8088/api/test-management/";
-    const encoded = "amltQGdtYWlsLmNvbQ";
+    const [searchParams] = useSearchParams();
+    const encodedEmail = searchParams.get("par1");
+
     const idx = useSelector(state => state.testIndex.idx);
     const dispatch = useDispatch();
 
     const [data, setData] = useState([{}]);
     const [dataIndex, setDataIndex] = useState({});
+    const [saveSuccess, setSaveSuccess] = useState(false);
+    const [saveFail, setSaveFail] = useState(false);
 
     useEffect(() => {
-        axios.get(url + "gettest/" + encoded)
+        axios.get(url + "gettest/" + encodedEmail)
             .then(function (response) {
                 console.log(response.data.data);
                 setData(response.data.data);
@@ -31,26 +39,62 @@ function Index() {
         setDataIndex(data?.at(idx));
     }, [data, idx]);
 
+    useEffect(() => {
+        setSaveFail(false);
+        setSaveSuccess(false);
+    }, [idx]);
+
     const handleChange = (event, questionId) => {
         // console.log(questionId);
         let answerId = +event.target.value;   // convert string to int
         axios.post(url + "saveanswer", {
-            encodedemail: encoded,
+            encodedemail: encodedEmail,
             question_id: questionId,
             answer_id: answerId
         }).then(function (response) {
             if (response.data.message === "success") {
                 let dataCopy = [...data];
                 let dataIndexCopy = { ...dataCopy[idx] };
-                dataIndexCopy.answer.id = answerId;
+                if (dataIndexCopy.answer == null) {
+                    dataIndexCopy.answer = {
+                        id: answerId
+                    };
+                } else {
+                    dataIndexCopy.answer.id = answerId;
+                }
                 dataCopy[idx] = dataIndexCopy;
                 setData(dataCopy);
-                console.log("hi");
+                setSaveFail(false);
+                setSaveSuccess(true);
+                // console.log("hi");
             }
         }).catch(function (error) {
-            console.log(error);
+            setSaveSuccess(false);
+            setSaveFail(true);
+            // console.log(error);
         })
+    }
 
+    const SuccessAlert = () => {
+        return (
+            <div className="alert alert-success" id="success">
+                Answer Saved!
+            </div>
+        )
+    }
+
+    const FailAlert = () => {
+        return (
+            <div className="alert alert-danger" id="fail">
+                Answer Save Failed, Please Retry
+            </div>
+        )
+    }
+
+    const SubmitButton = () => {
+        return (
+            <button className="btn btn-primary test-button" onClick={() => Submit(encodedEmail)}>Submit</button>
+        )
     }
 
     return (
@@ -67,9 +111,13 @@ function Index() {
                         {data.map((x, index) => {
                             return (
                                 <button onClick={() => dispatch(go(index))}
-                                    className="list-group-item list-group-item-action navigation-menu-item"
-                                    data-toggle="list">
-                                    Number {index}
+                                    className={
+                                        x.answer?.id == null ? "list-group-item list-group-item-action navigation-menu-item"
+                                            : "list-group-item list-group-item-action navigation-menu-item filled"
+                                    }
+                                    data-toggle="button"
+                                    key={index}>
+                                    Number {index + 1}
                                 </button>
                             )
                         })}
@@ -106,12 +154,8 @@ function Index() {
                         </form>
 
                         <div className="reserve-space" id="alert-space">
-                            <div className="alert alert-success" style={{ display: "none" }} id="success">
-                                Answer Saved!
-                            </div>
-                            <div className="alert alert-danger" style={{ display: "none" }} id="fail">
-                                Answer Save Failed, Please Retry
-                            </div>
+                            {saveSuccess ? <SuccessAlert></SuccessAlert> : null}
+                            {saveFail ? <FailAlert></FailAlert> : null}
                         </div>
 
                         <div className="navigation">
@@ -127,15 +171,20 @@ function Index() {
                             </div>
                         </div>
 
+                        <div className="reserve-space">
+                            <div className="row">
+                                <div className="input-group justify-content-md-center">
+                                    <div className="col-md-6 text-center">
+                                        {idx < data.length - 1 ? null : <SubmitButton></SubmitButton>}
+                                        {/* <SubmitButton></SubmitButton> */}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
-            {/* <div>
-                <p>
-                    {idx}
-                </p>
-            </div> */}
         </div>
     )
 }

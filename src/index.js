@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+// import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Candidate from "../src/components/page/admin/candidate";
+// import Candidate from "../src/components/page/admin/candidate";
 import { Provider } from "react-redux";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from "./app/store";
 import TestIndex from "./components/page/test";
+// import TimerIndex from "./components/template/timer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +16,11 @@ root.render(
     {/* <App /> */}
     {/* {<Candidate></Candidate>} */}
     <Provider store={store}>
-      <TestIndex></TestIndex>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/test" element={<TestIndex></TestIndex>}></Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );
