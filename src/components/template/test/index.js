@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
+// import { Route } from 'react-router-dom';
 import axios from "axios";
 import Submit from "../../../services/test/submit";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,33 +10,39 @@ import './index.css';
 
 
 
-function Index() {
-    const url = "http://localhost:8088/api/test-management/";
-    const [searchParams] = useSearchParams();
-    const encodedEmail = searchParams.get("par1");
+function Index(props) {
+    // const url = "http://localhost:8088/api/test-management/";
+    // const [searchParams] = useSearchParams();
+    // const encodedEmail = searchParams.get("par1");
+    const dispatch = useDispatch();
+    const encodedEmail = props.encodedEmail;
+    const url = props.url;
 
     const idx = useSelector(state => state.testIndex.idx);
-    const dispatch = useDispatch();
 
+    // const [data, setData] = useState([{}]);
     const [data, setData] = useState([{}]);
     const [dataIndex, setDataIndex] = useState({});
     const [saveSuccess, setSaveSuccess] = useState(false);
     const [saveFail, setSaveFail] = useState(false);
-
+    
     useEffect(() => {
-        axios.get(url + "gettest/" + encodedEmail)
-            .then(function (response) {
-                console.log(response.data.data);
-                setData(response.data.data);
-                // setDataIndex(data.at(index));
-                // console.log(data);
-            })
-            .catch(function (error) {
-                // console.log(error);
-            })
+        console.log("in");
+        setData(props?.data);
+        console.log(props?.data);
     }, []);
+    
+    useEffect(() => {
+        if(encodedEmail.includes("/")) {
+            // return <Redirect to='/error'></Redirect>
+            console.log("askjdhasgdhjkas");
+        }
+    }, [encodedEmail]);
 
     useEffect(() => {
+        if(data.length === 0) {
+            console.log("candidate not found");
+        }
         setDataIndex(data?.at(idx));
     }, [data, idx]);
 

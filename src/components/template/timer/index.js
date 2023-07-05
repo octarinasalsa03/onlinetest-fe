@@ -1,13 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 import Submit from "../../../services/test/submit";
 
-function Index() {
+
+function Index(props) {
     // from https://www.geeksforgeeks.org/how-to-create-a-countdown-timer-using-reactjs/
     const Ref = useRef(null);
-    const [searchParams] = useSearchParams();
-    const encodedEmail = searchParams.get("par1");
+    // const [searchParams] = useSearchParams();
+    // const encodedEmail = searchParams.get("par1");
+    const encodedEmail = props.encodedEmail;
     const [timer, setTimer] = useState('00:00:10');
+    const [start, setStart] = useState(false);
+
+    useEffect(() => {
+        setStart(props.start);
+    }, []);
 
     const getTimeRemaining = (e) => {
         const total = Date.parse(e) - Date.parse(new Date());
@@ -55,8 +62,10 @@ function Index() {
     }
 
     useEffect(() => {
-        clearTimer(getDeadTime());
-    }, [])
+        if(start) {
+            clearTimer(getDeadTime());
+        }
+    }, [start])
 
     useEffect(() => {
         if(timer ===  '00:00:00') {

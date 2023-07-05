@@ -8,6 +8,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from "./app/store";
 import TestIndex from "./components/page/test";
+import NotFound from "./components/template/error/404";
+import Finish from "./components/template/test/finish";
 // import TimerIndex from "./components/template/timer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,7 +20,13 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/test" element={<TestIndex></TestIndex>}></Route>
+          <Route path='/'>
+            <Route path='test' element={<TestIndex></TestIndex>}>
+              <Route path='finish' element={<Finish></Finish>}></Route>
+              <Route path='*' element={<NotFound></NotFound>}></Route>
+            </Route>
+            <Route path='*' element={<NotFound></NotFound>}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </Provider>
