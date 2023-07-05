@@ -11,9 +11,6 @@ import './index.css';
 
 
 function Index(props) {
-    // const url = "http://localhost:8088/api/test-management/";
-    // const [searchParams] = useSearchParams();
-    // const encodedEmail = searchParams.get("par1");
     const dispatch = useDispatch();
     const encodedEmail = props.encodedEmail;
     const url = props.url;
@@ -27,22 +24,12 @@ function Index(props) {
     const [saveFail, setSaveFail] = useState(false);
     
     useEffect(() => {
-        console.log("in");
+        // console.log("in");
         setData(props?.data);
         console.log(props?.data);
     }, []);
-    
-    useEffect(() => {
-        if(encodedEmail.includes("/")) {
-            // return <Redirect to='/error'></Redirect>
-            console.log("askjdhasgdhjkas");
-        }
-    }, [encodedEmail]);
 
     useEffect(() => {
-        if(data.length === 0) {
-            console.log("candidate not found");
-        }
         setDataIndex(data?.at(idx));
     }, [data, idx]);
 
@@ -52,7 +39,6 @@ function Index(props) {
     }, [idx]);
 
     const handleChange = (event, questionId) => {
-        // console.log(questionId);
         let answerId = +event.target.value;   // convert string to int
         axios.post(url + "saveanswer", {
             encodedemail: encodedEmail,
