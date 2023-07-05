@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-// import { useSearchParams } from "react-router-dom";
-import Submit from "../../../services/test/submit";
+// import { useNavigate } from "react-router-dom";
+import SubmitForce, { SubmitManual } from "../../../services/test/submit";
 
 
 function Index(props) {
@@ -8,8 +8,10 @@ function Index(props) {
     const Ref = useRef(null);
     // const [searchParams] = useSearchParams();
     // const encodedEmail = searchParams.get("par1");
+    const durationMinutes = 30;
+    const initialTime = '00:30:00';
     const encodedEmail = props.encodedEmail;
-    const [timer, setTimer] = useState('00:00:10');
+    const [timer, setTimer] = useState(initialTime);
     const [start, setStart] = useState(false);
 
     useEffect(() => {
@@ -40,7 +42,7 @@ function Index(props) {
 
     const clearTimer = (e) => {
 
-        setTimer('00:00:10');
+        setTimer(initialTime);
 
         // If you try to remove this line the
         // updating of timer Variable will be
@@ -56,30 +58,43 @@ function Index(props) {
     const getDeadTime = () => {
         let deadline = new Date();
 
-        // deadline.setMinutes(deadline.getMinutes() + 30);
-        deadline.setSeconds(deadline.getSeconds() + 10);
+        deadline.setMinutes(deadline.getMinutes() + durationMinutes);
+        // deadline.setSeconds(deadline.getSeconds() + 10);
         return deadline;
     }
 
     useEffect(() => {
-        if(start) {
+        if (start) {
             clearTimer(getDeadTime());
         }
-    }, [start])
+    }, [start]);
 
-    useEffect(() => {
-        if(timer ===  '00:00:00') {
-            console.log("time's up!");
-            Submit(encodedEmail);
+    // useEffect(() => {
+    //     if (timer === '00:00:00') {
+    //         // console.log("time's up!");
+    //         // SubmitManual(encodedEmail);
+    //     }
+    // }, [timer]);
+
+    const loadPage = () => {
+        if (timer === '00:00:00') {
+            return (
+                <SubmitForce encodedEmail={encodedEmail}></SubmitForce>
+            )
         }
-    }, [timer])
 
-    return (
-        <>
+        return (
             <div className="container-fluid">
                 <p>Time Left: {timer}</p>
             </div>
+        )
+    }
+
+    return (
+        <>
+            {loadPage()}
         </>
+
     )
 }
 

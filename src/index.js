@@ -7,9 +7,10 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from "./app/store";
+import Greeting from "./components/template/test/greeting";
 import TestIndex from "./components/page/test";
-import NotFound from "./components/template/error/404";
 import Finish from "./components/template/test/finish";
+import NotFound from "./components/template/error/404";
 // import TimerIndex from "./components/template/timer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,7 +22,9 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path='/'>
-            <Route path='test' element={<TestIndex></TestIndex>}>
+            <Route path='test'>
+              <Route path="home" element={<Greeting></Greeting>}></Route>
+              <Route path='test' element={<TestIndex></TestIndex>}></Route>
               <Route path='finish' element={<Finish></Finish>}></Route>
               <Route path='*' element={<NotFound></NotFound>}></Route>
             </Route>

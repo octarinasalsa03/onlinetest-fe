@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
 // import { Route } from 'react-router-dom';
 import axios from "axios";
-import Submit from "../../../services/test/submit";
+import { SubmitManual } from "../../../services/test/submit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -86,13 +86,16 @@ function Index(props) {
 
     const SubmitButton = () => {
         return (
-            <button className="btn btn-primary test-button" onClick={() => Submit(encodedEmail)}>Submit</button>
+            <>
+                <SubmitManual encodedEmail={encodedEmail}></SubmitManual>
+            </>
         )
     }
 
     return (
         <div className="container-fluid" id="body">
             <div className="row justify-content-md-center">
+
                 <div className="col-4">
                     <h4 className="navigation-menu-header">
                         <span className="fw-semibold navigation-menu-item">

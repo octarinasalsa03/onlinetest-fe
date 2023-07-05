@@ -13,18 +13,12 @@ function Index() {
     const [start, setStart] = useState(false);
     const [errorObj, setErrorObj] = useState({});
 
-    useEffect(() => {
-        if (encodedEmail.includes("/")) {
-            // return <Redirect to='/error'></Redirect>
-            console.log("askjdhasgdhjkas");
-        }
-    }, [encodedEmail]);
-
-    useEffect(() => {
-        if (data.length === 0) {
-            console.log("candidate not found");
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (encodedEmail.includes("/")) {
+    //         // return <Redirect to='/error'></Redirect>
+    //         console.log("askjdhasgdhjkas");
+    //     }
+    // }, [encodedEmail]);
 
     useEffect(() => {
         axios.get(url + "gettest/" + encodedEmail)
@@ -46,15 +40,21 @@ function Index() {
                 setErrorObj({ message: error.message });
             })
     }, []);
+    
+    // useEffect(() => {
+    //     if (data.length === 0) {
+    //         console.log("candidate not found");
+    //     }
+    // }, [data]);
 
     const loadPage = () => {
         if (errorObj.message) {
             return (
-                <Navigate replace to='/error'></Navigate>
+                <Navigate replace={false} to='/error'></Navigate>
             )
         }
 
-        if (start) {
+        if (start && data) {
             return (
                 <div>
                     <TimerTemplate url={url} encodedEmail={encodedEmail} start={start}></TimerTemplate>
