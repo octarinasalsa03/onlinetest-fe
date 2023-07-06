@@ -6,8 +6,6 @@ import SubmitForce, { SubmitManual } from "../../../services/test/submit";
 function Index(props) {
     // from https://www.geeksforgeeks.org/how-to-create-a-countdown-timer-using-reactjs/
     const ref = useRef(null);
-    // const [searchParams] = useSearchParams();
-    // const encodedEmail = searchParams.get("par1");
     const durationHours = 1;
     const initialTime = '01:00:00';
     const encodedEmail = props.encodedEmail;
@@ -69,13 +67,6 @@ function Index(props) {
             clearTimer(getDeadTime());
         }
     }, [start]);
-
-    // useEffect(() => {
-    //     if (timer === '00:00:00') {
-    //         // console.log("time's up!");
-    //         // SubmitManual(encodedEmail);
-    //     }
-    // }, [timer]);
 
     const loadPage = () => {
         if (timer === '00:00:00') {

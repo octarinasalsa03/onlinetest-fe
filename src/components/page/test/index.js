@@ -13,26 +13,18 @@ function Index() {
     const [start, setStart] = useState(false);
     const [errorObj, setErrorObj] = useState({});
 
-    // useEffect(() => {
-    //     if (encodedEmail.includes("/")) {
-    //         // return <Redirect to='/error'></Redirect>
-    //         console.log("askjdhasgdhjkas");
-    //     }
-    // }, [encodedEmail]);
-
     useEffect(() => {
         axios.get(url + "gettest/" + encodedEmail)
             .then(function (response) {
-                // console.log(response.data.data);
                 if (response.data.data) {
                     if (response.data.data.length > 0) {
                         setData(response.data.data);
                         setStart(true);
                     } else {
-                        setErrorObj({ message: "candidate not found" });
+                        setErrorObj({ message: "not found" });
                     }
                 } else {
-                    setErrorObj({ message: "You have already finished the test" });
+                    setErrorObj({ message: "finish" });
                 }
             })
             .catch(function (error) {
@@ -40,18 +32,18 @@ function Index() {
                 setErrorObj({ message: error.message });
             })
     }, []);
-    
-    // useEffect(() => {
-    //     if (data.length === 0) {
-    //         console.log("candidate not found");
-    //     }
-    // }, [data]);
 
     const loadPage = () => {
         if (errorObj.message) {
-            return (
-                <Navigate replace={false} to='/error'></Navigate>
-            )
+            if (errorObj.message === "finish") {
+                return (
+                    <Navigate replace={false} to='/test/finish'></Navigate>
+                )
+            } else {
+                return (
+                    <Navigate replace={false} to='/error'></Navigate>
+                )
+            }
         }
 
         if (start && data) {

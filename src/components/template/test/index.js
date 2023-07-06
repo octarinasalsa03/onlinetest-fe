@@ -8,8 +8,6 @@ import { SubmitManual } from "../../../services/test/submit";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
-
-
 function Index(props) {
     const dispatch = useDispatch();
     const ref = useRef(null);
@@ -25,9 +23,7 @@ function Index(props) {
     const [saveFail, setSaveFail] = useState(false);
 
     useEffect(() => {
-        // console.log("in");
         setData(props?.data);
-        console.log(props?.data);
     }, []);
 
     useEffect(() => {
@@ -42,6 +38,11 @@ function Index(props) {
 
     const handleChange = (event, questionId) => {
         let answerId = +event.target.value;   // convert string to int
+        // console.log(JSON.stringify({
+        //     encodedemail: encodedEmail,
+        //     question_id: questionId,
+        //     answer_id: answerId
+        // }));
         axios.post(url + "saveanswer", {
             encodedemail: encodedEmail,
             question_id: questionId,
@@ -61,12 +62,10 @@ function Index(props) {
                 setData(dataCopy);
                 setSaveFail(false);
                 setSaveSuccess(true);
-                // console.log("hi");
             }
         }).catch(function (error) {
             setSaveSuccess(false);
             setSaveFail(true);
-            // console.log(error);
         })
     }
 
