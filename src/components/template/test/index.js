@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
@@ -12,6 +12,7 @@ import './index.css';
 
 function Index(props) {
     const dispatch = useDispatch();
+    const ref = useRef(null);
     const encodedEmail = props.encodedEmail;
     const url = props.url;
 
@@ -22,7 +23,7 @@ function Index(props) {
     const [dataIndex, setDataIndex] = useState({});
     const [saveSuccess, setSaveSuccess] = useState(false);
     const [saveFail, setSaveFail] = useState(false);
-    
+
     useEffect(() => {
         // console.log("in");
         setData(props?.data);
@@ -36,6 +37,7 @@ function Index(props) {
     useEffect(() => {
         setSaveFail(false);
         setSaveSuccess(false);
+        ref.current?.scrollIntoView(false);
     }, [idx]);
 
     const handleChange = (event, questionId) => {
@@ -107,12 +109,13 @@ function Index(props) {
                         {data.map((x, index) => {
                             return (
                                 <button onClick={() => dispatch(go(index))}
-                                    className={
-                                        x.answer?.id == null ? "list-group-item list-group-item-action navigation-menu-item"
-                                            : "list-group-item list-group-item-action navigation-menu-item filled"
+                                    className={"list-group-item list-group-item-action navigation-menu-item"
+                                        + (x.answer?.id == null ? "" : " filled")
+                                        + (index !== idx ? "" : " active")
                                     }
                                     data-toggle="button"
-                                    key={index}>
+                                    key={index}
+                                    ref={index !== idx ? null : ref}>
                                     Number {index + 1}
                                 </button>
                             )

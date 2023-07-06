@@ -5,11 +5,11 @@ import SubmitForce, { SubmitManual } from "../../../services/test/submit";
 
 function Index(props) {
     // from https://www.geeksforgeeks.org/how-to-create-a-countdown-timer-using-reactjs/
-    const Ref = useRef(null);
+    const ref = useRef(null);
     // const [searchParams] = useSearchParams();
     // const encodedEmail = searchParams.get("par1");
-    const durationMinutes = 30;
-    const initialTime = '00:30:00';
+    const durationHours = 1;
+    const initialTime = '01:00:00';
     const encodedEmail = props.encodedEmail;
     const [timer, setTimer] = useState(initialTime);
     const [start, setStart] = useState(false);
@@ -47,18 +47,19 @@ function Index(props) {
         // If you try to remove this line the
         // updating of timer Variable will be
         // after 1000ms or 1sec
-        if (Ref.current) clearInterval(Ref.current);
+        if (ref.current) clearInterval(ref.current);
 
         const id = setInterval(() => {
             startTimer(e);
         }, 1000)
-        Ref.current = id;
+        ref.current = id;
     }
 
     const getDeadTime = () => {
         let deadline = new Date();
 
-        deadline.setMinutes(deadline.getMinutes() + durationMinutes);
+        deadline.setHours(deadline.getHours() + durationHours);
+        // deadline.setMinutes(deadline.getMinutes() + durationMinutes);
         // deadline.setSeconds(deadline.getSeconds() + 10);
         return deadline;
     }
