@@ -8,6 +8,7 @@ function Index(props) {
     const ref = useRef(null);
     const durationHours = 1;
     const initialTime = '01:00:00';
+    const startDate = new Date(props.startTime);
     const encodedEmail = props.encodedEmail;
     const [timer, setTimer] = useState(initialTime);
     const [start, setStart] = useState(false);
@@ -54,7 +55,13 @@ function Index(props) {
     }
 
     const getDeadTime = () => {
-        let deadline = new Date();
+        // let deadline = new Date(); // start date disini
+        let deadline = startDate;
+
+
+        // let startDate = new Date(rawStartTime);
+        // console.log(rawStartTime);
+        // console.log(startDate);
 
         deadline.setHours(deadline.getHours() + durationHours);
         // deadline.setMinutes(deadline.getMinutes() + durationMinutes);

@@ -8,9 +8,11 @@ function Index() {
     const url = "http://localhost:8088/api/test-management/";
     const [searchParams] = useSearchParams();
     const encodedEmail = searchParams.get("par1");
+    const json = JSON.stringify({ encodedemail: encodedEmail });
 
     const [data, setData] = useState([{}]);
     const [start, setStart] = useState(false);
+    const [startTime, setStartTime] = useState("");
     const [errorObj, setErrorObj] = useState({});
 
     useEffect(() => {
@@ -20,6 +22,17 @@ function Index() {
                     if (response.data.data.length > 0) {
                         setData(response.data.data);
                         setStart(true);
+
+                        axios.post(url + "start", json, {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(function (response2) {
+                            setStartTime(response2.data.data);
+                        }).catch(function (error) {
+                            setErrorObj({ message: error.message });
+                        })
+                        
                     } else {
                         setErrorObj({ message: "not found" });
                     }
@@ -46,10 +59,10 @@ function Index() {
             }
         }
 
-        if (start && data) {
+        if (start && data && startTime !== "") {
             return (
                 <div>
-                    <TimerTemplate url={url} encodedEmail={encodedEmail} start={start}></TimerTemplate>
+                    <TimerTemplate url={url} encodedEmail={encodedEmail} start={start} startTime={startTime}></TimerTemplate>
                     <TestTemplate url={url} encodedEmail={encodedEmail} data={data}></TestTemplate>
                 </div>
             )
