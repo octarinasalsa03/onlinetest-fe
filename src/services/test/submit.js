@@ -1,12 +1,12 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+// import { useState } from "react";
 import axios from "axios";
 
-function SubmitPost(encodedEmail) {
+function SubmitPost(data) {
     const url = "http://localhost:8088/api/test-management/";
-    const json = JSON.stringify({ encodedemail: encodedEmail.encodedEmail });
+    const json = JSON.stringify({ encodedemail: data.encodedEmail });
     console.log(json);
-    // ajax
+    
     axios.post(url + "submit", json, {
         headers: {
             'Content-Type': 'application/json'
@@ -24,10 +24,11 @@ function SubmitPost(encodedEmail) {
 function SubmitManual(encodedEmail) {
 
     const navigate = useNavigate();
-    const [result, setResult] = useState(null);
+    // const [result, setResult] = useState(null);
 
     const submit = () => {
-        setResult(SubmitPost(encodedEmail));
+        // setResult(SubmitPost(encodedEmail));
+        SubmitPost(encodedEmail);
         navigate("/test/finish");
     }
 
@@ -41,10 +42,7 @@ function SubmitManual(encodedEmail) {
 }
 
 function SubmitForce(encodedEmail) {
-    // console.log(encodedEmail);
-
     SubmitPost(encodedEmail);
-
     return (
         <Navigate replace to="/test/finish"></Navigate>
     )

@@ -87,9 +87,7 @@ function Index(props) {
 
     const SubmitButton = () => {
         return (
-            <>
-                <SubmitManual encodedEmail={encodedEmail}></SubmitManual>
-            </>
+            <SubmitManual encodedEmail={encodedEmail}></SubmitManual>
         )
     }
 
@@ -170,11 +168,11 @@ function Index(props) {
                         </div>
 
                         <div className="reserve-space">
+                            <br></br>
                             <div className="row">
                                 <div className="input-group justify-content-md-center">
                                     <div className="col-md-6 text-center">
                                         {idx < data.length - 1 ? null : <SubmitButton></SubmitButton>}
-                                        {/* <SubmitButton></SubmitButton> */}
                                     </div>
                                 </div>
                             </div>

@@ -77,7 +77,9 @@ function Index(props) {
 
         return (
             <div className="container-fluid">
-                <p>Time Left: {timer}</p>
+                <h4>
+                    <p>Time Left: {timer}</p>
+                </h4>
             </div>
         )
     }
