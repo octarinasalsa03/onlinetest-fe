@@ -52,6 +52,10 @@ function Index() {
                 return (
                     <Navigate replace={false} to='/test/finish'></Navigate>
                 )
+            } else if (errorObj.message === "not found") {
+                return (
+                    <Navigate replace={false} to='/test/candidate-not-found'></Navigate>
+                )
             } else {
                 return (
                     <Navigate replace={false} to='/error'></Navigate>
