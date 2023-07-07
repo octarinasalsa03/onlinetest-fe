@@ -13,7 +13,7 @@ input[type=radio] {
     width: 100%;
     height: 100%;
     z-index: 10;
-    position: fixed;
+    /* position: fixed; */
 }
 
 .overlay.spinner-border {
@@ -22,9 +22,11 @@ input[type=radio] {
 }
 
 .home-container {
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
     height: 100%;
     /* border: 3px solid blue; */
 }
