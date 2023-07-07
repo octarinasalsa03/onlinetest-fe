@@ -1,6 +1,10 @@
 export const NotFound = () => {
     return (
-        <h1>404</h1>
+        <div className="overlay justify-content-center">
+            <div className="home-container">
+                <h1>404 Not Found</h1>
+            </div>
+        </div>
     )
 }
 

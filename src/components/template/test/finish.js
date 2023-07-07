@@ -1,6 +1,10 @@
 export const Finish = () => {
     return (
-        <h1>You have finished the test.</h1>
+        <div className="overlay justify-content-center">
+            <div className="home-container">
+                <h1>You have finished the test.</h1>
+            </div>
+        </div>
     )
 }
 
