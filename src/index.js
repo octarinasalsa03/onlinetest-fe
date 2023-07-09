@@ -1,15 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Candidate from "../src/components/page/admin/candidate";
+import Participant from "../src/components/page/admin/participant";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    {<Candidate></Candidate>}
+    {/* {<Candidate></Candidate>} */}
+    <Router>
+      <Routes>
+        <Route path="/admin" element={<Candidate />}></Route>
+        <Route path="/admin/participant" element={<Participant />}></Route>
+      </Routes>
+    </Router>
   </React.StrictMode>
 );
 
