@@ -33,16 +33,12 @@ function Index(props) {
     useEffect(() => {
         setSaveFail(false);
         setSaveSuccess(false);
-        ref.current?.scrollIntoView(false);
+        ref.current?.scrollIntoView({ block: "nearest" });
     }, [idx]);
 
     const handleChange = (event, questionId) => {
         let answerId = +event.target.value;   // convert string to int
-        // console.log(JSON.stringify({
-        //     encodedemail: encodedEmail,
-        //     question_id: questionId,
-        //     answer_id: answerId
-        // }));
+        
         axios.post(url + "saveanswer", {
             encodedemail: encodedEmail,
             question_id: questionId,
