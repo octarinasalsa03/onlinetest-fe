@@ -51,7 +51,7 @@ function Index(props) {
         // }
         axios.post(url + "saveanswer", json, {
             headers: {
-                'X-CSRF-TOKEN': csrfToken,
+                'X-XSRF-TOKEN': csrfToken,
                 'Content-Type': 'application/json'
             }
         }).then(function (response) {

@@ -9,7 +9,7 @@ function SubmitPost(data) {
     
     axios.post(url + "submit", json, {
         headers: {
-            'X-CSRF-TOKEN': data.csrfToken,
+            'X-XSRF-TOKEN': data.csrfToken,
             'Content-Type': 'application/json'
         }
     }).then(function (response) {
