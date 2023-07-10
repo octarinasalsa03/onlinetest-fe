@@ -13,6 +13,7 @@ function Index(props) {
     const ref = useRef(null);
     const encodedEmail = props.encodedEmail;
     const url = props.url;
+    const csrfToken = props.csrfToken;
 
     const idx = useSelector(state => state.testIndex.idx);
 
@@ -38,11 +39,21 @@ function Index(props) {
 
     const handleChange = (event, questionId) => {
         let answerId = +event.target.value;   // convert string to int
-        
-        axios.post(url + "saveanswer", {
+        const json = JSON.stringify({
             encodedemail: encodedEmail,
             question_id: questionId,
             answer_id: answerId
+        });
+        // {
+        //     encodedemail: encodedEmail,
+        //     question_id: questionId,
+        //     answer_id: answerId
+        // }
+        axios.post(url + "saveanswer", json, {
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json'
+            }
         }).then(function (response) {
             if (response.data.message === "success") {
                 let dataCopy = [...data];
@@ -83,7 +94,7 @@ function Index(props) {
 
     const SubmitButton = () => {
         return (
-            <SubmitManual encodedEmail={encodedEmail}></SubmitManual>
+            <SubmitManual encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitManual>
         )
     }
 
@@ -154,10 +165,14 @@ function Index(props) {
                             <div className="row">
                                 <div className="input-group">
                                     <div className="col-md-6 text-center">
-                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(previous())} disabled={idx < 1}>Previous</button>
+                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(previous())} disabled={idx < 1}>
+                                            <i className="bi bi-arrow-left"></i> Previous
+                                        </button>
                                     </div>
                                     <div className="col-md-6 text-center">
-                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(next())} disabled={idx >= data.length - 1}>Next</button>
+                                        <button className="btn btn-outline-primary test-button" onClick={() => dispatch(next())} disabled={idx >= data.length - 1}>
+                                            Next <i className="bi bi-arrow-right"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

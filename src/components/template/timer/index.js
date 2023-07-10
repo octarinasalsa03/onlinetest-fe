@@ -6,10 +6,13 @@ import SubmitForce, { SubmitManual } from "../../../services/test/submit";
 function Index(props) {
     // from https://www.geeksforgeeks.org/how-to-create-a-countdown-timer-using-reactjs/
     const ref = useRef(null);
+
     const durationHours = 1;
     const initialTime = '01:00:00';
     const startDate = new Date(props.startTime);
     const encodedEmail = props.encodedEmail;
+    const csrfToken = props.csrfToken;
+
     const [timer, setTimer] = useState(initialTime);
     const [start, setStart] = useState(false);
 
@@ -78,7 +81,7 @@ function Index(props) {
     const loadPage = () => {
         if (timer === '00:00:00') {
             return (
-                <SubmitForce encodedEmail={encodedEmail}></SubmitForce>
+                <SubmitForce encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitForce>
             )
         }
 

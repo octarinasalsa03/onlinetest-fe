@@ -9,6 +9,7 @@ function SubmitPost(data) {
     
     axios.post(url + "submit", json, {
         headers: {
+            'X-CSRF-TOKEN': data.csrfToken,
             'Content-Type': 'application/json'
         }
     }).then(function (response) {
@@ -21,14 +22,14 @@ function SubmitPost(data) {
     })
 }
 
-function SubmitManual(encodedEmail) {
+function SubmitManual(props) {
 
     const navigate = useNavigate();
     // const [result, setResult] = useState(null);
 
     const submit = () => {
         // setResult(SubmitPost(encodedEmail));
-        SubmitPost(encodedEmail);
+        SubmitPost(props);
         navigate("/test/finish");
     }
 
@@ -41,8 +42,8 @@ function SubmitManual(encodedEmail) {
     )
 }
 
-function SubmitForce(encodedEmail) {
-    SubmitPost(encodedEmail);
+function SubmitForce(props) {
+    SubmitPost(props);
     return (
         <Navigate replace to="/test/finish"></Navigate>
     )

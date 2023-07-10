@@ -10,41 +10,56 @@ function Index() {
     const encodedEmail = searchParams.get("par1");
     const json = JSON.stringify({ encodedemail: encodedEmail });
 
+    const [csrfToken, setCsrfToken] = useState("");
     const [data, setData] = useState([{}]);
     const [start, setStart] = useState(false);
     const [startTime, setStartTime] = useState("");
     const [errorObj, setErrorObj] = useState({});
 
     useEffect(() => {
-        axios.get(url + "gettest/" + encodedEmail)
-            .then(function (response) {
-                if (response.data.data) {
-                    if (response.data.data.length > 0) {
-                        setData(response.data.data);
-                        setStart(true);
+        axios.get(url + "csrf")
+            .then(function (tokenResponse) {
+                setCsrfToken(tokenResponse.data.token);
+                console.log(tokenResponse.data);
 
-                        axios.post(url + "start", json, {
-                            headers: {
-                                'Content-Type': 'application/json'
+                axios.get(url + "gettest/" + encodedEmail)
+                    .then(function (response) {
+                        if (response.data.data) {
+                            if (response.data.data.length > 0) {
+                                setData(response.data.data);
+                                setStart(true);
+                            } else {
+                                setErrorObj({ message: "not found" });
                             }
-                        }).then(function (response2) {
-                            setStartTime(response2.data.data);
-                        }).catch(function (error) {
-                            setErrorObj({ message: error.message });
-                        })
-                        
-                    } else {
-                        setErrorObj({ message: "not found" });
-                    }
-                } else {
-                    setErrorObj({ message: "finish" });
-                }
+                        } else {
+                            setErrorObj({ message: "finish" });
+                        }
+                    })
+                    .catch(function (error) {
+                        setErrorObj({ message: error.message });
+                    })
             })
             .catch(function (error) {
-                // console.log(error);
                 setErrorObj({ message: error.message });
-            })
+            });
+
     }, []);
+
+    useEffect(() => {
+        if (csrfToken !== "" && start) {
+            axios.post(url + "start", json, {
+                headers: {
+                    // 'X-XSRF-TOKEN': csrfToken,
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                setStartTime(response.data.data);
+            }).catch(function (error) {
+                setErrorObj({ message: error.message });
+            });
+        }
+    }, [csrfToken, start]);
 
     const loadPage = () => {
         if (errorObj.message) {
@@ -63,11 +78,11 @@ function Index() {
             }
         }
 
-        if (start && data && startTime !== "") {
+        if (csrfToken !== "" && start && data && startTime !== "") {
             return (
                 <div>
-                    <TimerTemplate url={url} encodedEmail={encodedEmail} start={start} startTime={startTime}></TimerTemplate>
-                    <TestTemplate url={url} encodedEmail={encodedEmail} data={data}></TestTemplate>
+                    <TimerTemplate url={url} encodedEmail={encodedEmail} csrfToken={csrfToken} start={start} startTime={startTime}></TimerTemplate>
+                    <TestTemplate url={url} encodedEmail={encodedEmail} csrfToken={csrfToken} data={data}></TestTemplate>
                 </div>
             )
         }
