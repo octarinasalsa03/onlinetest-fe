@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 // import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import Candidate from "../src/components/page/admin/candidate";
+import Candidate from "../src/components/page/admin/candidate";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from "./app/store";
@@ -30,6 +30,7 @@ root.render(
               <Route path='candidate-not-found' element={<CandidateNotFound></CandidateNotFound>}></Route>
               <Route path='*' element={<NotFound></NotFound>}></Route>
             </Route>
+            <Route path='candidate' element={<Candidate></Candidate>}></Route>
             <Route path='*' element={<NotFound></NotFound>}></Route>
           </Route>
         </Routes>
