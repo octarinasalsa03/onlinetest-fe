@@ -50,6 +50,7 @@ function Index(props) {
         //     answer_id: answerId
         // }
         axios.post(url + "saveanswer", json, {
+            withCredentials: true,
             headers: {
                 'X-XSRF-TOKEN': csrfToken,
                 'Content-Type': 'application/json'

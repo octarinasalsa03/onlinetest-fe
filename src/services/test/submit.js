@@ -5,9 +5,9 @@ import axios from "axios";
 function SubmitPost(data) {
     const url = "http://localhost:8088/api/test-management/";
     const json = JSON.stringify({ encodedemail: data.encodedEmail });
-    console.log(json);
     
     axios.post(url + "submit", json, {
+        withCredentials: true,
         headers: {
             'X-XSRF-TOKEN': data.csrfToken,
             'Content-Type': 'application/json'
@@ -25,17 +25,11 @@ function SubmitPost(data) {
 function SubmitManual(props) {
 
     const navigate = useNavigate();
-    // const [result, setResult] = useState(null);
 
     const submit = () => {
-        // setResult(SubmitPost(encodedEmail));
         SubmitPost(props);
         navigate("/test/finish");
     }
-
-    // useEffect(() => {
-    //     navigate("/test/finish");
-    // }, [result]);
 
     return (
         <button className="btn btn-primary test-button" onClick={() => submit()}>Submit</button>

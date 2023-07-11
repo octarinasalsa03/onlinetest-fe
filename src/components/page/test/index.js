@@ -3,15 +3,13 @@ import { useSearchParams, Navigate } from "react-router-dom";
 import TestTemplate from '../../template/test';
 import TimerTemplate from '../../template/timer';
 import axios from 'axios';
-import { type } from "@testing-library/user-event/dist/type";
 
 function Index() {
     const url = "http://localhost:8088/api/test-management/";
     const [searchParams] = useSearchParams();
     const encodedEmail = searchParams.get("par1");
-    const json = JSON.stringify({ encodedemail: encodedEmail });
 
-    // const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
     const [csrfToken, setCsrfToken] = useState("");
     const [data, setData] = useState([{}]);
     const [start, setStart] = useState(false);
@@ -19,14 +17,23 @@ function Index() {
     const [errorObj, setErrorObj] = useState({});
 
     useEffect(() => {
-        axios.defaults.withCredentials = false;
-        axios.get(url + "gettest/" + encodedEmail)
+        axios.get(url + "gettest/" + encodedEmail, {
+            withCredentials: false,
+        })
             .then(function (response) {
                 if (response.data.data) {
                     if (response.data.data.length > 0) {
                         setData(response.data.data);
                         setStart(true);
+                        // setCsrfToken(document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
                         // console.log(response)
+                        // axios.get(url + "csrf")
+                        //     .then(function (tokenResponse) {
+                        //         setCsrfToken(tokenResponse.data.token);
+                        //     })
+                        //     .catch(function (error) {
+                        //         setErrorObj({ message: error.message });
+                        //     });
                     } else {
                         setErrorObj({ message: "not found" });
                     }
@@ -39,26 +46,32 @@ function Index() {
             });
     }, []);
 
-    // useEffect(() => {
-    //     // console.log(data.length > 1);
-    //     if (data.length > 1 && start) {
-    //         axios.get(url + "csrf")
-    //             .then(function (tokenResponse) {
-    //                 setCsrfToken(tokenResponse.data.token);
-    //                 // console.log(tokenResponse.data);
-    //             })
-    //             .catch(function (error) {
-    //                 setErrorObj({ message: error.message });
-    //             });
-    //     }
-    // }, [start]);
+    useEffect(() => {
+        if (csrfToken === "" && start) {
+            axios.get(url + "csrf", {
+                withCredentials: true
+            })
+            .then(function (tokenResponse) {
+                // setCsrfToken(tokenResponse.data.token);
+                setCsrfToken(document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
+            })
+            .catch(function (error) {
+                setErrorObj({ message: error.message });
+            });
+        }
+    }, [start]);
 
     useEffect(() => {
         // console.log(csrfToken !== "");
-        // if (csrfToken !== "" && start) {
-        if (start) {
-            setCsrfToken(document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
+        if (csrfToken !== "" && start) {
+            // console.log("in");
+            // axios.defaults.withCredentials = true;
+            let json = JSON.stringify({
+                encodedemail: encodedEmail,
+                _csrf: csrfToken
+            });
             axios.post(url + "start", json, {
+                withCredentials: true,
                 headers: {
                     'X-XSRF-TOKEN': csrfToken,
                     'Content-Type': 'application/json'
@@ -66,17 +79,18 @@ function Index() {
             }).then(function (response) {
                 setStartTime(response.data.data);
             }).catch(function (error) {
-                console.log(error)
                 setErrorObj({ message: error.message });
             });
         }
         // }, [csrfToken, start]);
-    }, [start]);
+    }, [csrfToken]);
 
     const loadPage = () => {
-        // console.log(typeof csrfToken);
-        console.log(csrfToken);
-        console.log(csrfToken.trim());
+        // console.log(document.cookie);
+        // console.log(csrfToken === document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
+        // console.log(csrfToken);
+        // console.log(csrfToken);
+
         if (errorObj.message) {
             if (errorObj.message === "finish") {
                 return (
@@ -93,6 +107,7 @@ function Index() {
             }
         }
 
+        //  !== ""
         if (csrfToken !== "" && start && data.length > 1 && startTime !== "") {
             return (
                 <div>
