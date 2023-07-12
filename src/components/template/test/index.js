@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-// import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { previous, next, go } from "../../../features/testIndex/testIndexSlice";
-// import { Route } from 'react-router-dom';
 import axios from "axios";
 import { SubmitManual } from "../../../services/test/submit";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +15,6 @@ function Index(props) {
 
     const idx = useSelector(state => state.testIndex.idx);
 
-    // const [data, setData] = useState([{}]);
     const [data, setData] = useState([{}]);
     const [dataIndex, setDataIndex] = useState({});
     const [saveSuccess, setSaveSuccess] = useState(false);

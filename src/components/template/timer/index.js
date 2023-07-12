@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-// import { useNavigate } from "react-router-dom";
 import SubmitForce, { SubmitManual } from "../../../services/test/submit";
 
 
@@ -15,6 +14,7 @@ function Index(props) {
 
     const [timer, setTimer] = useState(initialTime);
     const [start, setStart] = useState(false);
+    const [submit, setSubmit] = useState(false);
 
     useEffect(() => {
         setStart(props.start);
@@ -32,13 +32,17 @@ function Index(props) {
 
     const startTimer = (e) => {
         let { total, hours, minutes, seconds } = getTimeRemaining(e);
-
+        console.log(total);
         if (total >= 0) {
             setTimer(
                 (hours > 9 ? hours : '0' + hours) + ':' +
                 (minutes > 9 ? minutes : '0' + minutes) + ':'
                 + (seconds > 9 ? seconds : '0' + seconds)
             )
+        }
+
+        if (total <= 0) {
+            setSubmit(true);
         }
     }
 
@@ -58,7 +62,7 @@ function Index(props) {
     }
 
     const getDeadTime = () => {
-        // let deadline = new Date(); // start date disini
+        // start date disini
         let deadline = startDate;
 
 
@@ -79,7 +83,9 @@ function Index(props) {
     }, [start]);
 
     const loadPage = () => {
-        if (timer === '00:00:00') {
+        // if (timer === '00:00:00') {
+        if (submit) {
+            // ref.current = null;
             return (
                 <SubmitForce encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitForce>
             )

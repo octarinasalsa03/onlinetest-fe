@@ -9,7 +9,6 @@ function Index() {
     const [searchParams] = useSearchParams();
     const encodedEmail = searchParams.get("par1");
 
-
     const [csrfToken, setCsrfToken] = useState("");
     const [data, setData] = useState([{}]);
     const [start, setStart] = useState(false);
@@ -25,8 +24,6 @@ function Index() {
                     if (response.data.data.length > 0) {
                         setData(response.data.data);
                         setStart(true);
-                        // setCsrfToken(document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
-                        // console.log(response)
                         // axios.get(url + "csrf")
                         //     .then(function (tokenResponse) {
                         //         setCsrfToken(tokenResponse.data.token);
@@ -62,9 +59,7 @@ function Index() {
     }, [start]);
 
     useEffect(() => {
-        // console.log(csrfToken !== "");
         if (csrfToken !== "" && start) {
-            // console.log("in");
             // axios.defaults.withCredentials = true;
             let json = JSON.stringify({
                 encodedemail: encodedEmail,
@@ -86,11 +81,6 @@ function Index() {
     }, [csrfToken]);
 
     const loadPage = () => {
-        // console.log(document.cookie);
-        // console.log(csrfToken === document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1'));
-        // console.log(csrfToken);
-        // console.log(csrfToken);
-
         if (errorObj.message) {
             if (errorObj.message === "finish") {
                 return (
