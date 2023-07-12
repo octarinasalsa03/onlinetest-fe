@@ -32,7 +32,7 @@ function Index(props) {
 
     const startTimer = (e) => {
         let { total, hours, minutes, seconds } = getTimeRemaining(e);
-        console.log(total);
+        // console.log(total);
         if (total >= 0) {
             setTimer(
                 (hours > 9 ? hours : '0' + hours) + ':' +

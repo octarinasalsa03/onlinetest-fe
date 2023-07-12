@@ -8,7 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 function Navbar({ Toggle }) {
   return (
     <>
-      <nav class="navbar navbar-expand-sm bg-white d-flex">
+      <nav class="navbar navbar-expand-sm bg-white d-flex mt-4">
         <div class="container-fluid">
           <h4>
             <i class="bi bi-list menu-logo" onClick={Toggle}></i>

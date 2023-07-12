@@ -8,6 +8,15 @@
   cursor: pointer;
 }
 
-#nav-col {
-  padding: 0 !important;
+#col-nav {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+nav {
+  border-radius: 20px;
+}
+
+.card {
+  border-radius: 15px;
 }
