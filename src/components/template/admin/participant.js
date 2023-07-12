@@ -1,13 +1,48 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../../organism/navbar";
 import Sidebar from "../../organism/admin/sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import DataTable from "react-data-table-component";
 
-function Participant(props) {
+function Participant() {
+  const url = "http://localhost:8088/api/candidate-management/participant/";
   const [toggle, setToggle] = useState(true);
   const Toggle = () => {
     setToggle(!toggle);
   };
+
+  const column = [
+    {
+      name: "No",
+      selector: (row) => row.id,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.fullname,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+    },
+    {
+      name: "Action",
+      cell: (row) => <button className="btn btn-primary">See Answer</button>,
+    },
+  ];
+
+  useEffect(() => {
+    axios
+      .get(url)
+      .then(function (res) {
+        setRecords(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const [records, setRecords] = useState([]);
+
   return (
     <div>
       <div className="container-fluid bg-body-secondary min-vh-100">
@@ -22,10 +57,8 @@ function Participant(props) {
               <Navbar Toggle={Toggle}></Navbar>
               <div className="card mt-5 border-0">
                 <div className="card-body">
-                  <a className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
-                    Create
-                  </a>
-                  <table className="table mt-3 text-center" id="myTable">
+                  <DataTable columns={column} data={records} pagination></DataTable>
+                  {/* <table className="table mt-3 text-center" id="myTable">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -50,7 +83,7 @@ function Participant(props) {
                         );
                       })}
                     </tbody>
-                  </table>
+                  </table> */}
                 </div>
               </div>
             </div>

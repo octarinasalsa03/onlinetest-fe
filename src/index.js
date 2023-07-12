@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Candidate from "../src/components/page/admin/candidate";
 import Participant from "../src/components/page/admin/participant";
+import ParticipantAnswer from "../src/components/page/admin/participantAnswer";
 // import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 // import Candidate from "../src/components/page/admin/candidate";
@@ -14,6 +15,7 @@ import TestIndex from "./components/page/test";
 import Finish from "./components/template/test/finish";
 import NotFound from "./components/template/error/404";
 import CandidateNotFound from "./components/template/error/candidateNotFound";
+import Login from "./components/page/admin/login";
 // import TimerIndex from "./components/template/timer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,13 +23,21 @@ root.render(
   <React.StrictMode>
     {/* <App /> */}
     {/* {<Candidate></Candidate>} */}
+    {/* <Router>
+      <Routes>
+        <Route path="/admin" element={<Candidate />}></Route>
+        <Route path="/admin/participant" element={<Participant />}></Route>
+      </Routes>
+    </Router> */}
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
+          <Route path="/admin" element={<Candidate />}></Route>
+          <Route path="/admin/participant" element={<Participant />}></Route>
+          <Route path="/admin/participant/answer/:id" element={<ParticipantAnswer />}></Route>
+          <Route path="/admin/login" element={<Login />}></Route>
           <Route path="/">
             <Route path="test">
-              <Route path="/admin" element={<Candidate />}></Route>
-              <Route path="/admin/participant" element={<Participant />}></Route>
               <Route path="home" element={<Greeting></Greeting>}></Route>
               <Route path="test" element={<TestIndex></TestIndex>}></Route>
               <Route path="finish" element={<Finish></Finish>}></Route>
