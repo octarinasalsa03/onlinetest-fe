@@ -63,7 +63,6 @@ function Index() {
             // axios.defaults.withCredentials = true;
             let json = JSON.stringify({
                 encodedemail: encodedEmail,
-                _csrf: csrfToken
             });
             axios.post(url + "start", json, {
                 withCredentials: true,
