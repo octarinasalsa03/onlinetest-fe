@@ -35,17 +35,16 @@ function Index(props) {
     }, [idx]);
 
     const handleChange = (event, questionId) => {
+        setSaveFail(false);
+        setSaveSuccess(false);
+        
         let answerId = +event.target.value;   // convert string to int
         const json = JSON.stringify({
             encodedemail: encodedEmail,
             question_id: questionId,
             answer_id: answerId
         });
-        // {
-        //     encodedemail: encodedEmail,
-        //     question_id: questionId,
-        //     answer_id: answerId
-        // }
+
         axios.post(url + "saveanswer", json, {
             withCredentials: true,
             headers: {

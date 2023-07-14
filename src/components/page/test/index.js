@@ -5,7 +5,7 @@ import TimerTemplate from '../../template/timer';
 import axios from 'axios';
 
 function Index() {
-    const url = "http://localhost:8088/api/test-management/";
+    const url = "http://localhost:8088/api/test-management/candidate/";
     const [searchParams] = useSearchParams();
     const encodedEmail = searchParams.get("par1");
 
