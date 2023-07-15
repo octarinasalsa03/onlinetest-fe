@@ -3,7 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function SubmitPost(data) {
-    const url = "http://localhost:8088/api/test-management/";
+    // const url = "http://localhost:8088/api/test-management/";
+    const url = data.url;
     const json = JSON.stringify({ encodedemail: data.encodedEmail });
     
     axios.post(url + "submit", json, {

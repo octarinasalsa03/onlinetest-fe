@@ -37,7 +37,7 @@ function Index(props) {
     const handleChange = (event, questionId) => {
         setSaveFail(false);
         setSaveSuccess(false);
-        
+
         let answerId = +event.target.value;   // convert string to int
         const json = JSON.stringify({
             encodedemail: encodedEmail,
@@ -91,7 +91,7 @@ function Index(props) {
 
     const SubmitButton = () => {
         return (
-            <SubmitManual encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitManual>
+            <SubmitManual url={url} encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitManual>
         )
     }
 

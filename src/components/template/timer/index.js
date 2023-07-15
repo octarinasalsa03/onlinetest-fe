@@ -87,7 +87,7 @@ function Index(props) {
         if (submit) {
             // ref.current = null;
             return (
-                <SubmitForce encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitForce>
+                <SubmitForce url={props.url} encodedEmail={encodedEmail} csrfToken={csrfToken}></SubmitForce>
             )
         }
 
