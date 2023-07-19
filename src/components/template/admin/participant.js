@@ -4,9 +4,11 @@ import Sidebar from "../../organism/admin/sidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
+import AuthHeader from "../../../services/dataService";
+import { Link } from "react-router-dom";
 
 function Participant() {
-  const url = "http://localhost:8088/api/candidate-management/participant/";
+  const url = "http://localhost:8088/api/candidate-management/participant";
   const [toggle, setToggle] = useState(true);
   const Toggle = () => {
     setToggle(!toggle);
@@ -27,7 +29,11 @@ function Participant() {
     },
     {
       name: "Action",
-      cell: (row) => <button className="btn btn-primary">See Answer</button>,
+      cell: (row) => (
+        <Link to={`/admin/participant/answer/${row.id}`} className="btn btn-primary">
+          See Answer
+        </Link>
+      ),
     },
   ];
 
@@ -38,7 +44,7 @@ function Participant() {
         setRecords(res.data.data);
         console.log(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(JSON.parse(window.localStorage.getItem("user")).token));
   }, []);
 
   const [records, setRecords] = useState([]);

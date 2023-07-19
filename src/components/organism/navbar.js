@@ -4,32 +4,41 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
+import authService from "../../services/authService";
+import { redirect, useNavigate } from "react-router-dom";
 
 function Navbar({ Toggle }) {
+  const navigate = useNavigate();
+
+  function logout() {
+    authService.logout();
+    navigate("/admin/login");
+  }
+
   return (
     <>
-      <nav class="navbar navbar-expand-sm bg-white d-flex mt-4">
-        <div class="container-fluid">
+      <nav className="navbar navbar-expand-sm bg-white d-flex mt-4">
+        <div className="container-fluid">
           <h4>
-            <i class="bi bi-list menu-logo" onClick={Toggle}></i>
+            <i className="bi bi-list menu-logo" onClick={Toggle}></i>
           </h4>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Octarina
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Profile
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" onClick={(e) => logout()} href="#">
                       Logout
                     </a>
                   </li>

@@ -2,6 +2,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import authService from "../../../services/authService";
 
 function Login() {
   const [inputData, setInputData] = useState({ email: "", password: "" });
@@ -9,11 +10,13 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    // authService.login(inputData);
 
     axios.post("http://localhost:8088/api/user-management/authentication", inputData).then(function (res) {
-      //   console.log(res.data.data);
-      const { token } = res.data.data;
-      localStorage.setItem("token", token);
+      console.log(res.data);
+      const user = res.data.data;
+      console.log(user);
+      window.localStorage.setItem("user", JSON.stringify(user));
       navigate("/admin");
     });
   }

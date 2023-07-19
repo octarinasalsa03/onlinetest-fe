@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { useParams } from "react-router-dom";
+import AuthHeader from "../../../services/dataService";
 
 function ParticipantAnswer() {
   const { id } = useParams();
@@ -40,7 +41,7 @@ function ParticipantAnswer() {
         setRecords(res.data.data);
         console.log(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(JSON.parse(window.localStorage.getItem("user")).token));
   }, []);
 
   const [records, setRecords] = useState([]);
