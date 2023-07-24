@@ -3,10 +3,10 @@ const ProtectedRoute = ({}) => {
   // let auth = false;
   let auth = true;
   const checkAuth = () => {
-    if (localStorage.getItem("user") === null) {
+    if (sessionStorage.getItem("user") === null) {
       console.log("gagal");
       auth = false;
-    } else if (JSON.parse(window.localStorage.getItem("user").token != null)) {
+    } else if (JSON.parse(window.sessionStorage.getItem("user").token != null)) {
       auth = true;
     }
     return auth;

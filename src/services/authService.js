@@ -16,11 +16,12 @@ class AuthService {
   //   }
 
   logout() {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   }
 
   getCurrentUser() {
-    return JSON.parse(window.localStorage.getItem("user"));
+    const obj = JSON.parse(window.sessionStorage.getItem("user"));
+    return obj.fullname;
   }
 }
 

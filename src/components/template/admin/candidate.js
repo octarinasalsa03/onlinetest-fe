@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
 import service from "../../../services/user/service";
 
 function Candidate() {
@@ -13,6 +14,35 @@ function Candidate() {
   const Toggle = () => {
     setToggle(!toggle);
   };
+
+  // const datetime = new Date().toISOString().slice(0, -8).split('T')[0]
+  const [inputData, setInputData] = useState({ fullname: "", email: "", score: null, istestfinished: 0, Teststarttime: "" });
+  const [datetime, setDatetime] = useState("");
+  const navigate = useNavigate();
+
+  function handleChange(ev) {
+    if (!ev.target["validity"].valid) return;
+    // const dt = ev.target["value"] + ":00Z";
+    const dt = ev.target["value"].replace("T", " ") + ":00";
+
+    setDatetime(dt);
+    setInputData({ ...inputData, Teststarttime: datetime });
+    // console.log("ini " + ev);
+    // console.log("ini " + dt);
+    // console.log(datetime);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    // setInputData({ ...inputData, Teststarttime: datetime });
+    // authService.login(inputData);
+    console.log(inputData);
+    try {
+      axios.post("http://localhost:8088/api/candidate", inputData).then(function (res) {
+        window.location.reload();
+      });
+    } catch (error) {}
+  }
 
   const column = [
     {
@@ -48,7 +78,7 @@ function Candidate() {
         setRecords(res.data.data);
         console.log(res.data.data);
       })
-      .catch((err) => console.log(JSON.parse(window.localStorage.getItem("user")).token));
+      .catch((err) => console.log(JSON.parse(window.sessionStorage.getItem("user")).token));
   }, []);
 
   const [records, setRecords] = useState([]);
@@ -66,75 +96,58 @@ function Candidate() {
               <Navbar Toggle={Toggle}></Navbar>
               <div className="card mt-5 border-0">
                 <div className="card-body">
-                  {/* <a className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
-                    Create
-                  </a> */}
+                  <a className="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
+                    Add Candidate
+                  </a>
                   <DataTable columns={column} data={records} pagination></DataTable>
-                  {/* <table className="table mt-3 text-center" id="myTable">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Candidate Name</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {props.data.map((x) => {
-                        return (
-                          <tr>
-                            <td>{x.id}</td>
-                            <td>{x.name}</td>
-                            <td>{x.email}</td>
-                            <td>
-                              <button className="btn btn-primary">Send Link</button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* <div class="modal" tabindex="-1" id="createParticipantModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className="modal" tabindex="-1" id="createParticipantModal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Modal title</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-            <form onSubmit={handleSubmit}>
-              <div class="mb-3">
-                <label for="email" class="form-label">
-                  Email
-                </label>
-                <input type="email" class="form-control" id="email" name="email" onChange={(e) => setInputData({ ...inputData, email: e.target.value })} />
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">
-                  Password
-                </label>
-                <input type="password" class="form-control" id="password" name="password" onChange={(e) => setInputData({ ...inputData, password: e.target.value })} />
-              </div>
-              <button class="btn btn-primary">Submit</button>
-            </form>
+            <div className="modal-body">
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label for="fullname" className="form-label">
+                    Full Name
+                  </label>
+                  <input type="text" className="form-control" id="Fullname" name="Fullname" onChange={(e) => setInputData({ ...inputData, fullname: e.target.value })} />
+                </div>
+                <div className="mb-3">
+                  <label for="email" className="form-label">
+                    Email
+                  </label>
+                  <input type="email" className="form-control" id="Email" name="Email" onChange={(e) => setInputData({ ...inputData, email: e.target.value })} />
+                </div>
+                <div className="mb-3">
+                  <label for="teststarttime" className="form-label">
+                    Test Start Time
+                  </label>
+                  <input type="datetime-local" className="form-control" value={(datetime || "").toString().substring(0, 16)} onChange={handleChange} />
+                  {/* <input type="datetime-local" className="form-control" id="Teststarttime" name="Teststarttime" onChange={(e) => setInputData({ ...inputData, Teststarttime: e.target.defaultValue })} /> */}
+                </div>
+                <button className="btn btn-primary">Submit</button>
+              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
-              <button type="button" class="btn btn-primary">
+              <button type="button" className="btn btn-primary">
                 Save changes
               </button>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 

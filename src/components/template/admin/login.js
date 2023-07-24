@@ -16,7 +16,7 @@ function Login() {
       console.log(res.data);
       const user = res.data.data;
       console.log(user);
-      window.localStorage.setItem("user", JSON.stringify(user));
+      window.sessionStorage.setItem("user", JSON.stringify(user));
       navigate("/admin");
     });
   }

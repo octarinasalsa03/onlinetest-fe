@@ -44,7 +44,7 @@ function Participant() {
         setRecords(res.data.data);
         console.log(res.data.data);
       })
-      .catch((err) => console.log(JSON.parse(window.localStorage.getItem("user")).token));
+      .catch((err) => console.log(JSON.parse(window.sessionStorage.getItem("user")).token));
   }, []);
 
   const [records, setRecords] = useState([]);
